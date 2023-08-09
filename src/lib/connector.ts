@@ -1,5 +1,12 @@
+// @ts-nocheck
 import Torus, { TorusInpageProvider } from "@toruslabs/torus-embed";
-import { Chain, Connector, ConnectorData, normalizeChainId, UserRejectedRequestError } from "@wagmi/core";
+import {
+  Chain,
+  Connector,
+  ConnectorData,
+  normalizeChainId,
+  UserRejectedRequestError,
+} from "@wagmi/core";
 import { ethers, Signer } from "ethers";
 import { getAddress } from "ethers/lib/utils";
 import log from "loglevel";
@@ -74,7 +81,8 @@ export class TorusConnector extends Connector {
           this.torusInstance.showTorusButton();
         }
 
-        document.getElementById("torusIframe").style.zIndex = "999999999999999999";
+        document.getElementById("torusIframe").style.zIndex =
+          "999999999999999999";
         await this.torusInstance.login();
       }
 
@@ -112,7 +120,9 @@ export class TorusConnector extends Connector {
 
   async getAccount(): Promise<string> {
     try {
-      const provider = new ethers.providers.Web3Provider(await this.getProvider());
+      const provider = new ethers.providers.Web3Provider(
+        await this.getProvider()
+      );
       const signer = provider.getSigner();
       const account = await signer.getAddress();
       return account;
@@ -132,7 +142,9 @@ export class TorusConnector extends Connector {
 
   async getSigner(): Promise<Signer> {
     try {
-      const provider = new ethers.providers.Web3Provider(await this.getProvider());
+      const provider = new ethers.providers.Web3Provider(
+        await this.getProvider()
+      );
       const signer = provider.getSigner();
       return signer;
     } catch (error) {
@@ -175,7 +187,7 @@ export class TorusConnector extends Connector {
       if (!chain) throw new Error(`Unsupported chainId: ${chainId}`);
       if (!this.isAuthorized()) throw new Error("Please login first");
       await this.torusInstance.setProvider({
-        host: chain.rpcUrls.default,
+        host: chain.rpcUrls.default.http[0],
         chainId,
         networkName: chain.name,
       });
