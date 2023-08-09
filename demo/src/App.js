@@ -10,21 +10,24 @@ import {
   metaMaskWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { chain, createClient, WagmiConfig, configureChains } from "wagmi";
+import { createClient, WagmiConfig, configureChains } from "wagmi";
+import { mainnet, polygon, optimism, arbitrum } from '@wagmi/core/chains'
 import { rainbowTorusConnector } from "./RainbowTorusConnector";
 
 import { publicProvider } from 'wagmi/providers/public'
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [mainnet, polygon, optimism, arbitrum],
   [publicProvider()],
 );
+
+const projectId = "acd532ccb5b241a06e27ffc22bcd4a3b"
 const connectors = connectorsForWallets([
   {
     groupName: "Recommended",
     wallets: [
-      rainbowWallet({ chains }),
-      walletConnectWallet({ chains }),
-      metaMaskWallet({ chains }),
+      rainbowWallet({ chains, projectId }),
+      walletConnectWallet({ chains, projectId }),
+      metaMaskWallet({ chains, projectId }),
       rainbowTorusConnector({ chains }),
     ],
   },
